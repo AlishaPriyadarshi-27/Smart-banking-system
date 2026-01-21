@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Bank UI</title>
+
+<style>
+
+*{
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    background: linear-gradient(to right,#74ebd5,#9face6);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card */
+.card{
+    width: 350px;
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Title */
+.card h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+/* Balance Box */
+.balance-box{
+    background: #ecf3ff;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.amount-text{
+    color: #2e86de;
+}
+
+/* Input */
+.input-box{
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+/* Buttons */
+.btn-group{
+    display: flex;
+    gap: 10px;
+}
+
+.btn{
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+}
+
+.add-btn{
+    background: #1abc9c;
+}
+
+.remove-btn{
+    background: #ff6b6b;
+}
+
+.btn:hover{
+    transform: scale(1.05);
+}
+
+/* Message */
+.status{
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+@media(max-width:480px){
+    .btn-group{
+        flex-direction: column;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Smart Bank</h2>
+
+<div class="balance-box">
+    <div>Available Balance</div>
+    <div class="amount-text" id="showBalance">₹1000</div>
+</div>
+
+<input type="number" class="input-box" id="userAmount" placeholder="Enter amount">
+
+<div class="btn-group">
+    <button class="btn add-btn" onclick="addMoney()">Add</button>
+    <button class="btn remove-btn" onclick="removeMoney()">Withdraw</button>
+</div>
+
+<div class="status" id="statusMsg"></div>
+
+</div>
+
+<script>
+
+let totalBalance = 1000;
+
+function addMoney(){
+
+    let inputVal = parseInt(document.getElementById("userAmount").value);
+    let status = document.getElementById("statusMsg");
+
+    if(isNaN(inputVal) || inputVal <= 0){
+        status.style.color = "red";
+        status.innerHTML = "Please enter valid amount!";
+        return;
+    }
+
+    totalBalance += inputVal;
+    refreshUI();
+
+    status.style.color = "green";
+    status.innerHTML = "Money Added Successfully ✔";
+}
+
+function removeMoney(){
+
+    let inputVal = parseInt(document.getElementById("userAmount").value);
+    let status = document.getElementById("statusMsg");
+
+    if(isNaN(inputVal) || inputVal <= 0){
+        status.style.color = "red";
+        status.innerHTML = "Invalid Withdrawal Amount!";
+        return;
+    }
+
+    if(inputVal > totalBalance){
+        status.style.color = "red";
+        status.innerHTML = "Low Balance!";
+        return;
+    }
+
+    totalBalance -= inputVal;
+    refreshUI();
+
+    status.style.color = "green";
+    status.innerHTML = "Withdrawal Completed ✔";
+}
+
+function refreshUI(){
+    document.getElementById("showBalance").innerHTML = "₹" + totalBalance;
+    document.getElementById("userAmount").value = "";
+}
+
+</script>
+
+</body>
+</html>
